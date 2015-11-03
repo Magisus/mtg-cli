@@ -1,3 +1,3 @@
-require_relative '../lib/string_reverser'
+require_relative '../lib/mtg_cli'
 
-StringReverser::Cli.new(ARGV).run
+MtgCli::Cli.new(ARGV).run

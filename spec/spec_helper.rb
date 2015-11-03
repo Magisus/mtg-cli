@@ -1,4 +1,4 @@
-require_relative '../lib/string_reverser'
+require_relative '../lib/mtg_cli'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
