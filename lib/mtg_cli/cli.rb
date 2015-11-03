@@ -1,3 +1,5 @@
+require 'pry'
+
 module MtgCli
   class Cli
     def initialize(arg)
@@ -5,7 +7,8 @@ module MtgCli
     end
 
     def run
-      puts @arg
+      file = Downloader.new('http://mtgjson.com/json/AllSets.json').get
+      binding.pry
     end
   end
 end
