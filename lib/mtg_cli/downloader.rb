@@ -1,4 +1,5 @@
 require 'open-uri'
+require 'io/console'
 
 module MtgCli
   class Downloader
@@ -10,9 +11,16 @@ module MtgCli
 
     def get
       url = URI.parse(path)
-      length = 0
-      open(path, content_length_proc: -> (size) { length = size },
-                 progress_proc:       -> (size) { puts size.fdiv(length) * 100 })
+      open(path,
+      content_length_proc: -> (length) {
+        @progress_bar = ProgressBar.new(
+          window_size: IO.console.winsize[1],
+          total: length
+        )
+      },
+      progress_proc: -> (progress) {
+        @progress_bar.update(progress)
+      })
     end
   end
 end
