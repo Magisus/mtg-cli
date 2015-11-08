@@ -5,22 +5,26 @@ module MtgCli
   class Downloader
     attr_reader :path
 
-    def initialize(path)
+    def initialize(path:)
       @path = path
     end
 
     def get
-      url = URI.parse(path)
-      open(path,
-      content_length_proc: -> (length) {
-        @progress_bar = ProgressBar.new(
-          window_size: IO.console.winsize[1],
-          total: length
-        )
-      },
-      progress_proc: -> (progress) {
-        @progress_bar.update(progress)
-      })
+      puts 'Downloading...'
+      open(
+        path,
+
+        content_length_proc: -> (length) {
+          @progress_bar = ProgressBar.new(
+            window_size: IO.console.winsize[1],
+            total: length
+          )
+        },
+
+        progress_proc: -> (progress) {
+          @progress_bar.update(progress)
+        }
+      )
     end
   end
 end

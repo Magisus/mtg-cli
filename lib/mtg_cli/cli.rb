@@ -18,7 +18,8 @@ module MtgCli
     end
 
     def fetch_card_data(destination)
-      tempfile = Downloader.new("http://mtgjson.com/json/AllSets.json").get
+      downloader = Downloader.new(path: "http://mtgjson.com/json/AllSets.json")
+      tempfile = downloader.get
       file = File.new(destination, 'w')
       file.write(tempfile.read)
     end
