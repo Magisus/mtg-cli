@@ -1,5 +1,5 @@
 module MtgCli
-  module Colors
+  module Color
     module_function
 
     COLOR_CODES = {
@@ -8,13 +8,14 @@ module MtgCli
     }
 
     COLOR_CODES.each do |color, code|
-      define_method(color.to_s) { |string| colorize(string, code) }
+      define_method(color.to_s) { |text| colorize(text, code) }
     end
 
-    def colorize(string, color_code)
-      "\e[#{color_code}m#{string}\e[0m"
+    def colorize(text, code)
+      "\e[#{code}m#{text}\e[0m"
     end
 
+    private_constant :COLOR_CODES
     private_class_method :colorize
   end
 end

@@ -20,7 +20,7 @@ module MtgCli
     describe '#update' do
       let(:pb) { ProgressBar.new(window_size: 80, total: 1000) }
 
-      it 'replaces progress and prints new steps to standard output' do
+      it 'updates progress and prints new steps to standard output' do
         expect { pb.update(12) }.to output('#').to_stdout
         expect(pb.steps).to eq 1
         expect { pb.update(24) }.to output('#').to_stdout
@@ -48,7 +48,7 @@ module MtgCli
     context 'public api' do
       it 'only exposes update and input query methods' do
         expect(
-          ProgressBar.instance_methods - Object.methods
+          ProgressBar.constants + ProgressBar.instance_methods - Object.methods
         ).to eq %i(window_size total steps update)
       end
     end

@@ -3,7 +3,7 @@ require 'io/console'
 
 module MtgCli
   module Downloader
-    extend Colors
+    extend Color
 
     module_function
 
