@@ -5,6 +5,12 @@ module MtgCli
     end
 
     def run
+      check_card_data
+    end
+
+    private
+
+    def check_card_data
       data_directory = File.expand_path("../../../data", __FILE__)
       data_file = data_directory + "/card-data.json"
       if !File.exist?(data_directory)
@@ -18,7 +24,7 @@ module MtgCli
     end
 
     def fetch_card_data(destination)
-      tempfile = Downloader.new("http://mtgjson.com/json/AllSets.json").get
+      tempfile = Downloader.get('http://mtgjson.com/json/AllSets.json')
       file = File.new(destination, 'w')
       file.write(tempfile.read)
     end

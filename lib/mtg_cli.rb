@@ -1,5 +1,4 @@
-require_relative 'mtg_cli/cli'
-require_relative 'mtg_cli/downloader'
+Dir["#{File.dirname(__FILE__)}/mtg_cli/*.rb"].each {|file| require file }
 
 module MtgCli
   # Namespace for app

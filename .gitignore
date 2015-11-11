@@ -36,3 +36,6 @@ Gemfile.lock
 
 #Application data
 *.json
+
+# Vim stuff
+*.swp
