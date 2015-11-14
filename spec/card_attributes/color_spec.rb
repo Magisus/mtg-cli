@@ -20,5 +20,13 @@ module MtgCli
         end
       end
     end
+
+    context 'public api' do
+      it 'only exposes colors query and ordered colors array' do
+        expect(
+          Color.constants + Color.instance_methods - Object.methods
+        ).to eq %i(COLORS colors)
+      end
+    end
   end
 end
