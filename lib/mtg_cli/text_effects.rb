@@ -1,5 +1,5 @@
 module MtgCli
-  module Color
+  module TextEffects
     module_function
 
     COLOR_CODES = {
