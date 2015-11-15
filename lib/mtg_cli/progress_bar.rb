@@ -3,12 +3,8 @@ module MtgCli
     attr_reader :window_size, :total, :steps
 
     def initialize(window_size:, total:)
-      if window_size < 1
-        fail ArgumentError, 'Window size cannot be less than 1.'
-      end
-      if total < 1
-        fail ArgumentError, 'Total cannot be less than 1.'
-      end
+      validate_greater_than(:window_size, 1, window_size)
+      validate_greater_than(:total, 0, total)
 
       @window_size = window_size
       @total = total
@@ -16,9 +12,7 @@ module MtgCli
     end
 
     def update(progress)
-      if progress > @total
-        fail ArgumentError, 'Progress cannot be greater than total.'
-      end
+      validate_less_than(:progress, total, progress)
 
       new_steps = as_steps(progress) - @steps
       print '#' * new_steps
@@ -29,6 +23,18 @@ module MtgCli
 
     def as_steps(progress)
       (progress.fdiv(total) * window_size).round
+    end
+
+    def validate_greater_than(attribute, expected, value)
+      return if value > expected
+      attribute = attribute.to_s.tr('_', ' ').capitalize!
+      fail ArgumentError, "#{attribute} must be greater than #{expected}."
+    end
+
+    def validate_less_than(attribute, expected, value)
+      return if expected >= value
+      attribute = attribute.to_s.tr('_', ' ').capitalize!
+      fail ArgumentError, "#{attribute} must be less than #{expected}."
     end
   end
 end

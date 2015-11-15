@@ -1,6 +1,5 @@
 module MtgCli
   class Type
-
     attr_reader :types
 
     def initialize(*types)

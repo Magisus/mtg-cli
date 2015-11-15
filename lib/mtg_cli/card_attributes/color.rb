@@ -3,7 +3,7 @@ module MtgCli
     attr_reader :colors
 
     def initialize(*colors)
-     @colors = colors
+      @colors = colors
     end
 
     COLORS = [

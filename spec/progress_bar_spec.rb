@@ -6,13 +6,13 @@ module MtgCli
         it 'raises an error if window size is less than 1' do
           expect {
             ProgressBar.new(window_size: 0, total: 1000)
-          }.to raise_error ArgumentError, 'Window size cannot be less than 1.'
+          }.to raise_error ArgumentError, 'Window size must be greater than 1.'
         end
 
         it 'raises an error if total is less than 1' do
           expect {
             ProgressBar.new(window_size: 80, total: 0)
-          }.to raise_error ArgumentError, 'Total cannot be less than 1.'
+          }.to raise_error ArgumentError, 'Total must be greater than 0.'
         end
       end
     end
@@ -40,7 +40,7 @@ module MtgCli
         it 'raises an error if progress exceeds total' do
           expect {
             pb.update(1200)
-          }.to raise_error ArgumentError, 'Progress cannot be greater than total.'
+          }.to raise_error ArgumentError, 'Progress must be less than 1000.'
         end
       end
     end

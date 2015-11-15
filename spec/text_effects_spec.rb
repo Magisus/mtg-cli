@@ -1,6 +1,5 @@
 module MtgCli
   describe TextEffects do
-
     describe '.red' do
       it 'colors the text red' do
         expect(TextEffects.red('test')).to eq "\e[31mtest\e[0m"

@@ -16,22 +16,23 @@ module MtgCli
     end
 
     def download_file(path)
-      begin
-        progress_bar = nil
-        open(path,
-          content_length_proc: -> (length) {
-            progress_bar = ProgressBar.new(
-              window_size: IO.console.winsize[1],
-              total: length
-            )
-          },
-          progress_proc: -> (progress) { progress_bar.update(progress) }
-        )
-      rescue SocketError
-        abort red('Error! Unable to establish connection.')
-      rescue StandardError
-        abort red('Error! Unable to download data.')
-      end
+      progress_bar = nil
+      open(
+        path,
+        content_length_proc: lambda do |length|
+          progress_bar = ProgressBar.new(
+            window_size: IO.console.winsize[1],
+            total: length
+          )
+        end,
+        progress_proc: lambda do |progress|
+          progress_bar.update(progress)
+        end
+      )
+    rescue SocketError
+      abort red('Error! Unable to establish connection.')
+    rescue StandardError
+      abort red('Error! Unable to download data.')
     end
 
     private_class_method :download_file
