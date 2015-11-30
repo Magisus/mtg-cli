@@ -19,7 +19,7 @@ module MtgCli
         }
       }
 
-      it 'should add set data to card data' do
+      it 'adds set data to card data and removes id field' do
         cards = DataFormatter.reformat(data)
         expect(cards['Forest']).to eq({'name' => 'Forest',
                                        'type' => 'Land',
@@ -29,7 +29,7 @@ module MtgCli
         expect(cards['Forest']).not_to include('id')
       end
 
-      it 'should sort data by card name' do
+      it 'sorts data by card name' do
         cards = DataFormatter.reformat(data)
         expect(cards.keys).to eq ['Forest', 'Plains', 'Simic Charm']
       end

@@ -17,14 +17,22 @@ module MtgCli
 
     def parse_set(set_hash)
       new_cards = {}
-      set_hash['cards'].each do |card_hash|
-        new_cards[card_hash['name']] = card_hash
-        card = new_cards[card_hash['name']]
-        card.delete('id')
-        card['setName'] = [set_hash['name']]
-        card['setCode'] = [set_hash['code']]
+      set_hash['cards'].each do |card|
+        add_card(new_cards, card)
+        add_set_data(card, set_hash)
       end
       new_cards
+    end
+
+    def add_card(new_cards, card)
+      new_cards[card['name']] = card
+    end
+
+    def add_set_data(card, set_hash)
+      card.delete('id')
+      card['setName'] = [set_hash['name']]
+      card['setCode'] = [set_hash['code']]
+      card
     end
 
     private_class_method :parse_set
