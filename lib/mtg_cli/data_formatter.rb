@@ -1,3 +1,4 @@
+require 'pry'
 module MtgCli
   module DataFormatter
     module_function
@@ -7,8 +8,8 @@ module MtgCli
       json_data.each do |set, data|
         cards = parse_set(data)
         reformatted_cards.merge!(parse_set(data)) do |key, old_card, new_card|
-          old_card['setName'].push(new_card['setName'].first)
-          old_card['setCode'].push(new_card['setCode'].first)
+          old_card['set_name'].push(new_card['set_name'].first)
+          old_card['set_code'].push(new_card['set_code'].first)
           old_card
         end
       end
@@ -18,8 +19,9 @@ module MtgCli
     def parse_set(set_hash)
       new_cards = {}
       set_hash['cards'].each do |card|
-        add_card(new_cards, card)
-        add_set_data(card, set_hash)
+        snakeified_card = snakeify_hash(card)
+        add_card(new_cards, snakeified_card)
+        add_set_data(snakeified_card, set_hash)
       end
       new_cards
     end
@@ -30,11 +32,23 @@ module MtgCli
 
     def add_set_data(card, set_hash)
       card.delete('id')
-      card['setName'] = [set_hash['name']]
-      card['setCode'] = [set_hash['code']]
+      card['set_name'] = [set_hash['name']]
+      card['set_code'] = [set_hash['code']]
       card
     end
 
-    private_class_method :parse_set
+    def snakeify_hash(hash)
+      hash.map { |k, v| [snakeify(k), v] }.to_h
+    end
+
+    def snakeify(string)
+      string.gsub(/::/, '/').
+      gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+      gsub(/([a-z\d])([A-Z])/,'\1_\2').
+      tr("-", "_").
+      downcase
+    end
+
+    private_class_method :parse_set, :add_card, :add_set_data
   end
 end

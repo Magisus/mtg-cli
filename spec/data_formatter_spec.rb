@@ -23,9 +23,9 @@ module MtgCli
         cards = DataFormatter.reformat(data)
         expect(cards['Forest']).to eq({'name' => 'Forest',
                                        'type' => 'Land',
-                                       'setName' => ['Nemesis',
+                                       'set_name' => ['Nemesis',
                                                      'Return to Ravnica'],
-                                       'setCode' => ['NMS', 'RTR']})
+                                       'set_code' => ['NMS', 'RTR']})
         expect(cards['Forest']).not_to include('id')
       end
 
