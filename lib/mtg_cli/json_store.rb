@@ -19,11 +19,11 @@ module MtgCli
     private
 
     def read(path)
-      File.open(path, 'r') { |f| JSON.parse(f.read) }
+      File.open(path, 'r:UTF-8') { |f| JSON.parse(f.read) }
     end
 
     def write(path, data)
-      File.open(path, 'a') { |f| f << JSON.generate(data) }
+      File.open(path, 'a:UTF-8') { |f| f << JSON.generate(data) }
     end
 
     def fetch(source)
