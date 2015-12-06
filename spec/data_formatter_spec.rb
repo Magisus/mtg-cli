@@ -7,14 +7,15 @@ module MtgCli
           'NMS' => {
             'name'  => 'Nemesis',
             'code'  => 'NMS',
-            'cards' => [{'name' => 'Plains', 'type' => 'Land'},
-                        {'name' => 'Forest', 'type' => 'Land'}]
+            'cards' => [{'name' => 'Plains', 'type' => 'Land', 'multiverseid' => '2'},
+                        {'name' => 'Forest', 'type' => 'Land', 'multiverseid' => '5'}]
             },
           'RTR' => {
             'name'  => 'Return to Ravnica',
             'code'  => 'RTR',
-            'cards' => [{'name' => 'Forest', 'type' => 'Land', 'id' => '10'},
-                        {'name' => 'Simic Charm', 'type' => 'Instant'}]
+            'cards' => [{'name' => 'Forest', 'type' => 'Land', 'id' => '10', 'multiverseid' => '2'},
+                        {'name' => 'Simic Charm', 'type' => 'Instant'},
+                        {'name' => 'Plains'}]
           }
         }
       }
@@ -23,10 +24,17 @@ module MtgCli
         cards = DataFormatter.reformat(data)
         expect(cards['Forest']).to eq({'name' => 'Forest',
                                        'type' => 'Land',
+                                       'multiverseid' => '5',
                                        'set_name' => ['Nemesis',
                                                      'Return to Ravnica'],
                                        'set_code' => ['NMS', 'RTR']})
         expect(cards['Forest']).not_to include('id')
+      end
+
+      it 'correctly saves only the largest multiverse id' do
+        cards = DataFormatter.reformat(data)
+        expect(cards['Forest']['multiverseid']).to eq('5')
+        expect(cards['Plains']['multiverseid']).to eq('2')
       end
 
       it 'sorts data by card name' do

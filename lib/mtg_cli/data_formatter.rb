@@ -8,9 +8,14 @@ module MtgCli
       json_data.each do |set, data|
         cards = parse_set(data)
         reformatted_cards.merge!(parse_set(data)) do |key, old_card, new_card|
-          old_card['set_name'].push(new_card['set_name'].first)
-          old_card['set_code'].push(new_card['set_code'].first)
-          old_card
+          old_card.merge!(new_card) do |key, old_trait, new_trait|
+            if(key == 'set_name' || key == 'set_code')
+              old_trait.push(new_trait.first)
+            elsif(key == 'multiverseid')
+              old_trait = new_trait > old_trait ? new_trait : old_trait
+            end
+            old_trait
+          end
         end
       end
       reformatted_cards.sort_by { |name, data| name }.to_h
