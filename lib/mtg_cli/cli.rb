@@ -1,26 +1,44 @@
 module MtgCli
   class Cli
+    FLAGS = %w(--gatherer)
+    COMMANDS = %w(update)
+    GATHERER = 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid='
+
     def initialize(arg)
       @arg = arg
     end
 
     def run
-      #TODO parse arguments and display correct Card
+      case command
+      when 'update'
+        #TODO run update
+      else
+        query(command, flags)
+      end
     end
 
     private
 
-    def arguments
-      card_name = ''
-      flags = []
-      @arg.each do |a|
-        if a.start_with?('--')
-          flags << a
-        else
-          card_name << " #{a}"
-        end
-      end
-      {card_name: card_name, flags: flags}
+    def query(command, flags)
+      card = Card.find_by_name(command)
+      visit_gatherer(card) if flags.include?('--gatherer')
+      puts card
+    end
+
+    def visit_gatherer(card)
+      `open #{GATHERER + card.multiverseid.to_s}`
+    end
+
+    def command
+      @command ||= @arg.reject { |arg| flag?(arg) }.join(' ')
+    end
+
+    def flags
+      @flags ||= @arg.select { |arg| flag?(arg) }
+    end
+
+    def flag?(arg)
+      arg.start_with?('--')
     end
   end
 end

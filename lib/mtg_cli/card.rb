@@ -6,11 +6,15 @@ module MtgCli
     end
 
     def initialize(*traits)
-      @traits = traits
+      @traits = traits.to_h
     end
 
     def to_s
       @traits.to_s
+    end
+
+    def traits
+      @traits.keys
     end
 
     def method_missing(method_name, *arguments, &block)
