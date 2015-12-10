@@ -1,30 +1,43 @@
 module MtgCli
   class CardDisplay
+    LINE_COLUMNS = 40
+
+    attr_reader :card
 
     def initialize(card)
       @card = card
-      @traits = []
-      card.traits.each { |trait| @traits.push(trait.to_sym) }
+      @traits = card.traits.map(&:to_sym)
     end
 
-    def render
-      @traits.each do |trait|
-        data = @card.send(trait)
-        self.send(trait, data)
-      end
+    def to_s
+<<-CARD
+#{header(card.name, card.mana_cost)}
+
+#{card.type}
+
+#{wrap(card.text)}
+
+#{pt(card.power, card.toughness)}
+CARD
     end
 
-    def name(card_name)
-      puts "Name: " + card_name
+    private
+
+    def wrap(text)
+      text.gsub(/(.{1,40})(\s+|\z)/, "\\1\n")
     end
 
-    def type(card_type)
-      puts "Type: " + card_type
+    def header(name, cost)
+      cost = cost.tr('{}', '')
+      spaces = ' ' * (LINE_COLUMNS - (name.size + cost.size))
+      "#{name}#{spaces}#{cost}"
     end
 
-    def mana_cost(card_cost)
-      puts 'Mana cost: ' + card_cost.tr('{}', '')
+    def pt(power, toughness)
+      return '' if power.empty? && toughness.empty?
+      pt = "(#{power}/#{toughness})"
+      spaces = ' ' * (LINE_COLUMNS - pt.size)
+      "#{spaces}#{pt}"
     end
-
   end
 end

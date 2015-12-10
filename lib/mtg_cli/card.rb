@@ -1,32 +1,45 @@
 module MtgCli
   class Card
     def self.find_by_name(name)
-      card_data = JSONStore.instance.card_data[name]
+      card_data = JSONStore.instance.card_data[name.to_sym]
       Card.new(*card_data)
     end
 
+    TRAITS = {
+      name: '',
+      mana_cost: '',
+      cmc: 0,
+      colors: [],
+      type: '',
+      supertypes: [],
+      subtypes: [],
+      rarity: '',
+      text: '',
+      flavor: '',
+      artist: '',
+      number: '',
+      power: '',
+      toughness: '',
+      layout: '',
+      multiverseid: 0,
+      image_name: ''
+    }
+
+    TRAITS.each do |k, _|
+      define_method(k) { @traits[k] }
+    end
+
     def initialize(*traits)
-      @traits = traits.to_h
+      traits = traits.to_h
+      @traits = TRAITS.merge(traits)
+    end
+
+    def traits
+      TRAITS.keys
     end
 
     def to_s
       @traits.to_s
-    end
-
-    def traits
-      @traits.keys
-    end
-
-    def method_missing(method_name, *arguments, &block)
-      if @traits.include?(method_name.to_s)
-        @traits[method_name.to_s]
-      else
-        super
-      end
-    end
-
-    def respond_to_missing?(method_name, include_private = false)
-      @traits.include?(method_name.to_s) || super
     end
   end
 end

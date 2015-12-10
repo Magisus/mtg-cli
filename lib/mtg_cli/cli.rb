@@ -22,7 +22,7 @@ module MtgCli
     def query(command, flags)
       card = Card.find_by_name(command)
       visit_gatherer(card) if flags.include?('--gatherer')
-      puts card
+      puts CardDisplay.new(card)
     end
 
     def visit_gatherer(card)
