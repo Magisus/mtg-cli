@@ -1,15 +1,18 @@
 module MtgCli
   describe CardDisplay do
 
-    let(:card) { Card.new(*{'name' => 'Putrefy', 'type' => 'instant', 'mana_cost' => '{1}{B}{G}'})}
+    let(:card) { Card.new(*{name: 'Putrefy', type: 'Instant', mana_cost: '{1}{B}{G}',
+                            text: 'Destroy target artifact or creature. It can\'t be regenerated.'}
+                         )}
 
     let(:display) { CardDisplay.new(card) }
 
-    describe '#render' do
+    describe '#to_s' do
       it 'displays the card traits' do
-        expect{ display.render }.to output("Name: Putrefy\n" +
-                                           "Type: instant\n" +
-                                           "Mana cost: 1BG\n").to_stdout
+        text = "\n\e[4mPutrefy                              1BG\e[0m\n\n" +
+               "Instant\n\nDestroy target artifact or creature. It\n" +
+               "can't be regenerated.\n\n\n\n"
+        expect(display.to_s).to eq(text)
       end
     end
 

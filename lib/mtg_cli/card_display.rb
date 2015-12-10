@@ -11,6 +11,7 @@ module MtgCli
 
     def to_s
 <<-CARD
+
 #{header(card.name, card.mana_cost)}
 
 #{card.type}
@@ -30,7 +31,7 @@ CARD
     def header(name, cost)
       cost = cost.tr('{}', '')
       spaces = ' ' * (LINE_COLUMNS - (name.size + cost.size))
-      "#{name}#{spaces}#{cost}"
+      "\e[4m#{name}#{spaces}#{cost}\e[0m"
     end
 
     def pt(power, toughness)
