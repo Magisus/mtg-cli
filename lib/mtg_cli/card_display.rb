@@ -31,7 +31,26 @@ CARD
     def header(name, cost)
       cost = cost.tr('{}', '')
       spaces = ' ' * (LINE_COLUMNS - (name.size + cost.size))
-      "\e[4m#{name}#{spaces}#{cost}\e[0m"
+      TextEffects.underline("#{name}#{spaces}#{cost}")
+    end
+
+    #This works, but I think it looks bad. We can rethink
+    def colorize_mana_cost(cost)
+      colored_cost = ""
+      cost.each_char do |c|
+        if c == "U"
+          colored_cost += TextEffects.blue(c)
+        elsif c == "B"
+          colored_cost += TextEffects.magenta(c)
+        elsif c == "R"
+          colored_cost += TextEffects.red(c)
+        elsif c == "G"
+          colored_cost += TextEffects.green(c)
+        else
+          colored_cost += c
+        end
+      end
+      colored_cost
     end
 
     def pt(power, toughness)

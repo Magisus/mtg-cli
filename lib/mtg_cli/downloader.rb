@@ -1,9 +1,10 @@
 require 'open-uri'
 require 'io/console'
+require_relative 'text_effects'
 
 module MtgCli
   module Downloader
-    extend Color
+    extend TextEffects
 
     module_function
 
