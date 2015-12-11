@@ -1,7 +1,6 @@
 module MtgCli
   class Cli
-    FLAGS = %w(--gatherer)
-    COMMANDS = %w(update)
+    FLAGS = %w(--gatherer, --verbose)
     GATHERER = 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid='
 
     def initialize(arg)
@@ -9,12 +8,7 @@ module MtgCli
     end
 
     def run
-      case command
-      when 'update'
-        #TODO run update
-      else
-        query(command, flags)
-      end
+      query(command, flags)
     end
 
     private
@@ -22,7 +16,11 @@ module MtgCli
     def query(command, flags)
       card = Card.find_by_name(command)
       visit_gatherer(card) if flags.include?('--gatherer')
-      puts CardDisplay.new(card)
+      if flags.include?('--verbose')
+        puts CardDisplay.new(card).verbose()
+      else
+        puts CardDisplay.new(card)
+      end
     end
 
     def visit_gatherer(card)

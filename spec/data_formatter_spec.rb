@@ -42,5 +42,13 @@ module MtgCli
         expect(cards.keys).to eq ['Forest', 'Plains', 'Simic Charm']
       end
     end
+
+    context 'public api' do
+      it 'only exposes reformat method' do
+        expect(
+          DataFormatter.constants + DataFormatter.methods - Object.methods
+        ).to eq %i(reformat)
+      end
+    end
   end
 end

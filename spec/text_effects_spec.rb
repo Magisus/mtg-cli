@@ -32,7 +32,7 @@ module MtgCli
     end
 
     context 'public api' do
-      it 'only exposes color methods' do
+      it 'only exposes color and effect methods' do
         expect(
           TextEffects.constants + TextEffects.methods - Object.methods
         ).to eq %i(red green yellow blue magenta bold italic underline inverse)

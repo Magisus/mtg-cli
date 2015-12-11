@@ -9,55 +9,55 @@ module MtgCli
       @traits = card.traits.map(&:to_sym)
     end
 
-    def to_s
-<<-CARD
-
-#{header(card.name, card.mana_cost)}
-
-#{card.type}
-
-#{wrap(card.text)}
-
-#{pt(card.power, card.toughness)}
-CARD
+    def to_string(verbose: false)
+      card_string = header(card.name, card.mana_cost)
+      card_string << type(card.type)
+      card_string << rules_text(card.text)
+      card_string << flavor(card.flavor) if verbose
+      card_string << pt(card.power, card.toughness)
+      card_string << additional_data if verbose
+      card_string
     end
 
     private
 
     def wrap(text)
-      text.gsub(/(.{1,40})(\s+|\z)/, "\\1\n")
+      text.gsub(/(.{1,#{LINE_COLUMNS}})(\s+|\z)/, "\\1\n").chomp("\n")
     end
 
     def header(name, cost)
       cost = cost.tr('{}', '')
       spaces = ' ' * (LINE_COLUMNS - (name.size + cost.size))
-      TextEffects.underline("#{name}#{spaces}#{cost}")
+      underlined = TextEffects.underline("#{name}#{spaces}#{cost}")
+      "\n#{underlined}\n"
     end
 
-    #This works, but I think it looks bad. We can rethink
-    def colorize_mana_cost(cost)
-      colored_cost = ""
-      cost.each_char do |c|
-        if c == "U"
-          colored_cost += TextEffects.blue(c)
-        elsif c == "B"
-          colored_cost += TextEffects.magenta(c)
-        elsif c == "R"
-          colored_cost += TextEffects.red(c)
-        elsif c == "G"
-          colored_cost += TextEffects.green(c)
-        else
-          colored_cost += c
-        end
-      end
-      colored_cost
+    def type(card_type)
+      "\n#{card_type}\n"
+    end
+
+    def rules_text(text)
+      "\n#{wrap(text)}\n"
+    end
+
+    def flavor(flavor_text)
+      "\n#{TextEffects.italic(wrap(card.flavor))}\n"
     end
 
     def pt(power, toughness)
       return '' if power.empty? && toughness.empty?
       pt = "(#{power}/#{toughness})"
       spaces = ' ' * (LINE_COLUMNS - pt.size)
-      "#{spaces}#{pt}"
+      "\n#{spaces}#{pt}\n"
+    end
+
+    def additional_data
+<<-CARD
+
+Artist: #{card.artist}
+Rarity: #{card.rarity}
+Sets: #{card.set_name.join(', ')}
+CARD
     end
   end
 end

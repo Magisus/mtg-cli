@@ -22,7 +22,9 @@ module MtgCli
       toughness: '',
       layout: '',
       multiverseid: 0,
-      image_name: ''
+      image_name: '',
+      set_name: [],
+      set_code: []
     }
 
     TRAITS.each do |k, _|

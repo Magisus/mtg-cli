@@ -1,4 +1,3 @@
-require 'pry'
 module MtgCli
   module DataFormatter
     module_function
@@ -7,18 +6,31 @@ module MtgCli
       reformatted_cards = {}
       json_data.each do |set, data|
         cards = parse_set(data)
-        reformatted_cards.merge!(parse_set(data)) do |key, old_card, new_card|
-          old_card.merge!(new_card) do |key, old_trait, new_trait|
-            if(key == 'set_name' || key == 'set_code')
-              old_trait.push(new_trait.first)
-            elsif(key == 'multiverseid')
-              old_trait = new_trait > old_trait ? new_trait : old_trait
-            end
-            old_trait
-          end
+        reformatted_cards.merge!(parse_set(data)) do |_, old_card, new_card|
+          merge_set_data(old_card, new_card)
         end
       end
       reformatted_cards.sort_by { |name, data| name }.to_h
+    end
+
+    def merge_set_data(old_card, new_card)
+      old_card.merge(new_card) do |key, old_trait, new_trait|
+        if(key == 'set_name' || key == 'set_code')
+          add_new_set(old_trait, new_trait)
+        elsif(key == 'multiverseid')
+          use_most_recent_id(old_trait, new_trait)
+        else
+          old_trait
+        end
+      end
+    end
+
+    def add_new_set(old_set_list, new_set_list)
+      old_set_list.push(new_set_list.first)
+    end
+
+    def use_most_recent_id(old_id, new_id)
+      new_id > old_id ? new_id : old_id
     end
 
     def parse_set(set_hash)
@@ -54,6 +66,7 @@ module MtgCli
       downcase
     end
 
-    private_class_method :parse_set, :add_card, :add_set_data
+    private_class_method :parse_set, :add_card, :add_set_data, :add_new_set, :use_most_recent_id,
+                         :merge_set_data, :snakeify, :snakeify_hash
   end
 end
