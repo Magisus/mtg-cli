@@ -27,7 +27,7 @@ Instant
 Destroy target artifact or creature. It
 can't be regenerated.
 CARD
-          expect(display.to_string).to eq text
+          expect(display.to_s).to eq text
         end
       end
 
@@ -51,7 +51,7 @@ Artist: Richard Sardinha
 Rarity: Rare
 Sets: Dragon's Maze, Commander 2015
 CARD
-          expect(display.to_string(verbose: true)).to eq text
+          expect(display.to_s(verbose: true)).to eq text
         end
       end
     end

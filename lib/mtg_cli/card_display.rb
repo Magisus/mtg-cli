@@ -9,7 +9,7 @@ module MtgCli
       @traits = card.traits.map(&:to_sym)
     end
 
-    def to_string(verbose: false)
+    def to_s(verbose: false)
       card_string = header(card.name, card.mana_cost)
       card_string << type(card.type)
       card_string << rules_text(card.text)

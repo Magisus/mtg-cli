@@ -17,7 +17,7 @@ module MtgCli
       card = Card.find_by_name(command)
       visit_gatherer(card) if flags.include?('--gatherer')
       if flags.include?('--verbose')
-        puts CardDisplay.new(card).verbose()
+        puts CardDisplay.new(card).to_s(verbose: true)
       else
         puts CardDisplay.new(card)
       end
