@@ -40,3 +40,7 @@ Gemfile.lock
 
 # Vim stuff
 *.swp
+
+# C stuff
+*.o
+*.bundle

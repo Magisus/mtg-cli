@@ -2,16 +2,16 @@
 #include "ruby.h"
 
 // Defining a space for information and references about the module to be stored internally
-VALUE MyTest = Qnil;
+VALUE StringDistance = Qnil;
 
 // Prototype for the initialization method - Ruby calls this, not you
-void Init_mytest();
+void Init_string_distance();
 
 // Prototype for our method 'test1' - methods are prefixed by 'method_' here
-VALUE method_test1(VALUE self);
+VALUE method_distance(VALUE self);
 
 // The initialization method for this module
-void Init_mytest() {
+void Init_string_distance() {
 	StringDistance = rb_define_module("StringDistance");
 	rb_define_method(StringDistance, "distance", method_distance, 0);
 }
