@@ -1,8 +1,9 @@
 module MtgCli
   class Card
     def self.find_by_name(name)
-      card_data = JSONStore.instance.card_data[name.to_sym]
-      Card.new(*card_data)
+      card_data = JSONStore.instance.card_data
+      name = FuzzyFinder.fuzzy_find(name, card_data.keys) if card_data[name.to_sym].nil?
+      Card.new(*card_data[name.to_sym])
     end
 
     TRAITS = {

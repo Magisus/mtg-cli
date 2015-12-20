@@ -9,6 +9,7 @@ module MtgCli
           ['Lightning Blast', 'Lightning Bolt', 3]
         ]
         examples.each do |(a, b, distance)|
+          binding.pry
           expect(FuzzyFinder.distance(a, b)).to eq distance
         end
       end

@@ -20,6 +20,10 @@ module MtgCli
       d[m][n]
     end
 
+    def self.fuzzy_find(pattern, dictionary)
+      dictionary.min { |a, b| distance(a, pattern) <=> distance(b, pattern) }
+    end
+
     private
 
     def self.prefix_operation(a, b, d, i, j)

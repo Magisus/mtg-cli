@@ -1,3 +1,4 @@
+require 'pry'
 module MtgCli
   class Cli
     FLAGS = %w(--gatherer, --verbose)
